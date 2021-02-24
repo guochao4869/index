@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shangxin.demo.dao.JournalismResultMapper">
+
+
+<select id="conditionquery" parameterType="com.shangxin.demo.pojo.JournalismResult" resultType="com.shangxin.demo.pojo.JournalismResult">
+    select j1.id id,j2.name name,j2.writer writer,j2.time time,j2.source source,j1.details_id details_id,j1.state state,
+      j2.img img,j1.Slideshowsign Slideshowsign
+     from index_journalism j1,index_journalism_content j2 where j1.details_id =j2.id
+     <if test="id!=null and id!=''">
+         and j1.id=#{id}
+     </if>
+     <if test="name!=null and name!=''">
+        and j2.name like  concat(concat("%",#{name}),"%")
+     </if>
+     <if test="writer!=null and writer!=''">
+         and j2.writer like concat(concat("%",#{name}),"%")
+     </if>
+     <if test="time !=null and time!='' and time2==null and time2==''">
+         and j2.time BETWEEN #{time} and  date(now())
+     </if>
+    <if test="time ==null and time=='' and time2!=null and time2!=''">
+        and j2.time BETWEEN  '1949-10-01' and #{time}
+    </if>
+    <if test="time!=null and time!='' and time2!=null and time2!=''">
+        and j2.time BETWEEN #{time} and #{time2}
+    </if>
+    <if test="source!=null and source!=''" >
+        and j2.source like concat(concat("%",#{source}),"%")
+    </if>
+    <if test="state!=null and state!=''">
+        and j1.state =#{state}
+    </if>
+    <if test="slideshowsign!=null and slideshowsign!=''">
+        and j2.slideshowsign =#{slideshowsign}
+    </if>
+
+</select>
+
+</mapper>
